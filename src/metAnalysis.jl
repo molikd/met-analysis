@@ -1,5 +1,10 @@
 module metAnalysis
 
-greet() = print("Hello World!")
+#import PopGen
+#import GeneticVariation
+
+include("API.jl")
+include("globalDiversity.jl")
+
 
 end # module
