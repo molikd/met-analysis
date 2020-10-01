@@ -35,7 +35,8 @@ end
 
 function changeConfigFile()
 	parsed_args = parse_commandline()
-	
+
+	# need to figure out how to access location of config file for each user	
 	conf = ConfParse("config.yml")
 	parse_conf!(conf)
 
