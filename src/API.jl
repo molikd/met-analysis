@@ -1,11 +1,11 @@
 module API_calls
 
-using HTTP #TODO this will have to move up to metAnalysis.jl 
+using HTTP
 
+export insert_API_taxa
 
 ########### TAXA ###########
 
-#TODO  we'll have to url string into https://github.com/JuliaIO/ConfParser.jl type setui
 function insert_API_taxa(order, family, genus, species)
 	url = string("http://0.0.0.0:5000/met/taxa/add?ordo=", order, "&familia=", family, "&genus=", genus, "&species=", species)
 	try
@@ -24,6 +24,16 @@ function delete_API_taxa(taxon_id)
 	catch e
 		return "Error occured: $e"
 	end
+end
+
+function get_API_taxa(ordo, familia, genus, species)
+    url = string("http://0.0.0.0:5000/met/taxa/id?ordo=", ordo, "&familia=", familia, "&genus=", genus, "&species=", species)
+    try
+        response = HTTP.get(url)
+        return String(response.body)
+    catch e
+        return "Error occured: $e"
+    end
 end
 
 ########### TAXA_SEQ_ID ###########
