@@ -1,3 +1,3 @@
 FROM julia:alpine
 
-RUN julia -e 'Pkg.add("https://github.com/molikd/met-analysis")'
+RUN julia -e 'using Pkg; Pkg.add(url="https://github.com/molikd/met-analysis")'
