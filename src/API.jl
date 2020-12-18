@@ -134,8 +134,18 @@ end
 # NOTE: dataset_id must be entered as a int[], i.e. {1}
 
 
-function insert_API_projects(project_name, external_identifier, external_name, dataset_ids)
-    url = string("http://0.0.0.0:5000/met/projects/add?project_name=", project_name, "&external_identifier=", external_identifier, "&external_name=", external_name, "&dataset_ids=", dataset_ids)
+function insert_API_projects_total(project_name, external_identifier, external_name, dataset_ids)
+    url = string("http://0.0.0.0:5000/met/projects/add_total?project_name=", project_name, "&external_identifier=", external_identifier, "&external_name=", external_name, "&dataset_ids=", dataset_ids)
+    try
+        response = HTTP.post(url)
+        return String(response.body)
+    catch e
+        return "Error occured: $e"
+    end
+end
+
+function insert_API_projects(project_name, external_identifier, external_name)
+    url = string("http://0.0.0.0:5000/met/projects/add?project_name=", project_name, "&external_identifier=", external_identifier, "&external_name=", external_name)
     try
         response = HTTP.post(url)
         return String(response.body)
@@ -162,6 +172,16 @@ function get_API_projects(external_identifier)
     catch e
         return "Error occured: $e"
     end
+end
+
+function update_API_projects(dataset_id, project_name)
+	url = string("http://0.0.0.0:5000/met/projects/update?dataset_id=", dataset_id, "&project_name=", project_name)
+	try
+		response = HTTP.post(url)
+		return String(response.body)
+	catch e
+		return "Error occured: $e"
+	end
 end
 
 
