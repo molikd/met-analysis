@@ -1,6 +1,8 @@
-module utils
+module changeConf
 
 using JSON
+
+# adapted from plotly utils.jl
 
 struct MetError
     msg::String
@@ -77,24 +79,20 @@ end
 Return the session credentials if defined --> otherwise use .credentials specs
 """
 function get_credentials()
-    if !isdefined(Met, :metcredentials)
-
-        creds = merge(get_credentials_file(), get_credentials_env())
-
-        try
-            username = creds["username"]
-            api_key = creds["api_key"]
-
-            global metcredentials = MetCredentials(username, api_key)
-
-        catch
-            error("Please 'signin(username, api_key)' before proceeding. See
-            http://plot.ly/API for help!")
-        end
-    end
-
-    # will persist for the remainder of the session
-    return metcredentials
+	try
+		return metcredentials
+	catch
+		creds = merge(get_credentials_file(), get_credentials_env())
+		try
+			username = creds["username"]
+			api_key = creds["api_key"]
+			
+			global metcredentials = MetCredentials(username, api_key)
+			return metcredentials
+		catch
+			error("Please 'signin(username, api_key)' before proceeding")
+		end
+	end
 end
 
 """
@@ -102,13 +100,13 @@ end
 Return the session configuration if defined --> otherwise use .config specs
 """
 function get_config()
-    if !isdefined(Met, :metconfig)
-        config = get_config_file()
-        global metconfig = merge(DEFAULT_CONFIG, config)
-    end
-
-    # will persist for the remainder of the session
-    return metconfig
+	try
+		return metconfig
+	catch
+		config = get_config_file()
+		global metconfig = merge(DEFAULT_CONFIG, config)
+		return metconfig
+	end
 end
 
 """
