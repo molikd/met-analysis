@@ -23,6 +23,7 @@ mutable struct MetConfig
     world_readable::Bool
     auto_open::Bool
     fileopt::Symbol
+	toolkitpath::String
 end
 
 const DEFAULT_CONFIG = MetConfig(
@@ -34,7 +35,8 @@ const DEFAULT_CONFIG = MetConfig(
     "public",
     true,
     true,
-    :create
+    :create,
+	""
 )
 
 function Base.merge(config::MetConfig, other::AbstractDict)
@@ -58,8 +60,9 @@ Define session credentials/endpoint configuration, where endpoint is a Dict
 """
 function signin(
         username::String, api_key::String,
-        endpoints::Union{Nothing,AbstractDict}=nothing
-    )
+        endpoints::Union{Nothing,AbstractDict}=nothing,
+		toolkitpath::Union{Nothing, AbstractDict}=nothing
+	)
     global metcredentials = MetCredentials(username, api_key)
 
 
@@ -72,6 +75,9 @@ function signin(
         end
         global metconfig = merge(DEFAULT_CONFIG, endpoints)
     end
+	if toolkitpath != nothing
+		global metconfig = merge(DEFAULT_CONFIG, toolkitpath)
+	end
 end
 
 """
