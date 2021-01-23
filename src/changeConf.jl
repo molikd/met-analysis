@@ -24,6 +24,7 @@ mutable struct MetConfig
     auto_open::Bool
     fileopt::Symbol
 	toolkitpath::String
+	storagepath::String
 end
 
 const DEFAULT_CONFIG = MetConfig(
@@ -36,6 +37,7 @@ const DEFAULT_CONFIG = MetConfig(
     true,
     true,
     :create,
+	"",
 	""
 )
 
@@ -60,24 +62,31 @@ Define session credentials/endpoint configuration, where endpoint is a Dict
 """
 function signin(
         username::String, api_key::String,
-        endpoints::Union{Nothing,AbstractDict}=nothing,
-		toolkitpath::Union{Nothing, AbstractDict}=nothing
+		met_domain::Union{Nothing, AbstractDict}=nothing,
+		met_api_domain::Union{Nothing, AbstractDict}=nothing,
+		toolkitpath::Union{Nothing, AbstractDict}=nothing,
+		storagepath::Union{Nothing, AbstractDict}=nothing
 	)
     global metcredentials = MetCredentials(username, api_key)
 
-
-
-    # if endpoints are specified both the base and api domains must be
-    # specified
-    if endpoints != nothing
-        if !haskey(endpoints, "met_domain") || !haskey(endpoints, "met_api_domain")
-            error("You must specify both the `met_domain` and `met_api_domain`")
-        end
-        global metconfig = merge(DEFAULT_CONFIG, endpoints)
-    end
-	if toolkitpath != nothing
-		global metconfig = merge(DEFAULT_CONFIG, toolkitpath)
+	if met_domain != nothing && met_api_domain != nothing
+		global metconfig = merge(DEFAULT_CONFIG, met_domain)
+		metconfig = merge(get_config(), met_api_domain)
+		set_config_file(met_domain)
+		set_config_file(met_api_domain)
+	else
+		error("You must specify both the `met_domain` and `met_api_domain`")
 	end
+
+	if toolkitpath != nothing
+		metconfig = merge(get_config(), toolkitpath)
+		set_config_file(toolkitpath)
+	end
+	if storagepath != nothing
+		metconfig = merge(get_config(), storagepath)
+		set_config_file(storagepath)
+	end
+
 end
 
 """
@@ -106,13 +115,9 @@ end
 Return the session configuration if defined --> otherwise use .config specs
 """
 function get_config()
-	try
-		return metconfig
-	catch
-		config = get_config_file()
-		global metconfig = merge(DEFAULT_CONFIG, config)
-		return metconfig
-	end
+	config = get_config_file()
+	global metconfig = merge(DEFAULT_CONFIG, config)
+	return metconfig
 end
 
 """
@@ -171,7 +176,6 @@ Load user credentials informaiton as a dict
 function get_credentials_file()
     cred_file = joinpath(homedir(), ".met", ".credentials")
     filesize(cred_file) != 0 ? JSON.parsefile(cred_file) : Dict()
-	#isfile(cred_file) ? JSON.parsefile(cred_file) : Dict()
 end
 
 function get_credentials_env()
@@ -194,7 +198,6 @@ Load endpoint configuration as a Dict
 """
 function get_config_file()
     config_file = joinpath(homedir(), ".met", ".config")
-    #isfile(config_file) ? JSON.parsefile(config_file) : Dict()
 	filesize(config_file) != 0 ? JSON.parsefile(config_file) : Dict()
 end
 

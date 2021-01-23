@@ -7,7 +7,9 @@ using DataFrames
 using Dates
 
 include("API.jl")
+include("changeConf.jl")
 using .API_calls
+using .changeConf
 
 ### INSERT FASTA FILE INTO TAXA AND TAXA_SEQ_ID
 ### to run:
@@ -151,5 +153,92 @@ function SraRunInfo_insert(local_path, download_path)
 
 end
 
+### INSERT FASTQ INFORMATION FROM SRA NUM TO ASV AND ASV_ASSIGNMENT (IF NOT THERE)
+### to run:
+### metPopulate.SraFASTQ_insert("SRR4734645", "18S")
+
+function SraFASTQ_insert(sra_num, gene_region)
+
+    ## retrieve sra toolkit location and desired storage path for .fastq files from config file
+    config = changeConf.get_config()
+	toolkitpath = config.toolkitpath
+    storagepath = config.storagepath
+
+
+	## see if user specified where to store fastq files
+    if storagepath == ""
+        fastq_folder = joinpath(homedir(), ".fastq")
+    else
+        fastq_folder = joinpath(storagepath, ".fastq")
+    end
+
+    command = joinpath(toolkitpath, "bin/fasterq-dump")
+
+    run(`$command $sra_num -O $fastq_folder`)
+    fastq_filepath = joinpath(fastq_folder, string(sra_num, ".fastq"))
+
+    ## dataset id will be the same for all (same sra number)
+    dataset_id = API_calls.get_API_dataset(sra_num)
+    dataset_id = replace(dataset_id, "[" => "")
+    dataset_id = replace(dataset_id, "]" => "")
+
+    ## create dictionary so we can access quality score and amount found for each sequence
+    ## key == sequence, key[1] = quality score, key[2] = amount found
+    seq_dict = Dict()
+
+	reader = open(FASTQ.Reader, fastq_filepath)
+        for record in reader
+            ## extract information from each record
+            sequence = string(FASTQ.sequence(record))
+            quality = FASTQ.quality(record)
+
+            ## calculate average quality score (FASTQ.quality gives hex vals)
+            quality_sum = 0
+            total = 0
+            for num in quality
+                val = convert(Int64, num)
+                quality_sum = quality_sum + val
+                total = total + 1
+            end
+
+            avg_quality = quality_sum / total
+
+            ## look for sequence in dict
+            ## if it is there, compare the quality scores and let highest remain, then incrememnt amount found
+            ## if it is not there, insert into dictionary with quality score and amount found = 1
+
+            try
+                curr_quality = seq_dict[sequence][1]
+                if avg_quality > curr_quality
+                    seq_dict[sequence][1] = avg_quality
+                end
+                seq_dict[sequence][2] = seq_dict[sequence][2] + 1
+            catch
+                seq_dict[sequence] = [avg_quality, 1]
+            end
+        end
+    close(reader)
+
+
+	inserted = 0
+    for seq in keys(seq_dict)
+        try
+            ## currently quality_score is type text in asv table
+            API_calls.insert_API_asv(seq, string(floor(seq_dict[seq][1])), gene_region)
+        catch e
+            println("error inserting into asv table. is the sequence unique to the table?")
+            inserted = 1
+        end
+
+        if inserted == 0
+            asv_id = API_calls.get_API_asv(seq)
+            asv_id = replace(asv_id, "[" => "")
+            asv_id = replace(asv_id, "]" => "")
+
+            API_calls.insert_API_asvAssignment(parse(Int64, asv_id), parse(Int64, dataset_id), convert(Int64, seq_dict[seq][2]))
+        end
+    end
+
+end
 
 end
