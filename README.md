@@ -28,7 +28,7 @@ The config file is stored at the users homedirectory.met.config
 
 ## API_calls
 
-This module, found in [API.jl](https://github.com/molikd/met-analysis/blob/master/src/API.jl), is the Julia layer of interacting with the Perl API. All API calls are made through this module. 
+This module, found in [API.jl](https://github.com/molikd/met-analysis/blob/master/src/API.jl), is the Julia layer of interaction with the Perl API. All API calls are made through this module. 
 
 ## metPopulate
 
