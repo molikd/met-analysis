@@ -34,7 +34,7 @@ This module, found in [API.jl](https://github.com/molikd/met-analysis/blob/maste
 
 Users can use the metPopulate module to populate different tables of the met database.
 
-To insert a fasta file into the taxa and taxa_seq_id tables, run:
+######To insert a fasta file into the taxa and taxa_seq_id tables, run:
 
 ```bash
 julia> using metPopulate
@@ -47,7 +47,9 @@ For example:
 julia> metPopulate.fasta_insert("silva", "/Users/carolinedevoto/test_silva.fasta")
 ```
 
-To insert SRA run table information into the projects, datasets, and datasets_metadata tables, run the following command. Note: if the project identifier already exists in the project table, it will not insert and instead update projects.dataset_ids.
+######To insert SRA run table information into the projects, datasets, and datasets_metadata tables, run the following command. 
+
+Note: if the project identifier already exists in the project table, it will not insert and instead update projects.dataset_ids.
 
 ```bash
 julia> metPopulate.SraRunInfo_insert(local_path, download_path) 
@@ -59,7 +61,9 @@ For example:
 julia> metPopulate.SraRunInfo_insert("/Users/carolinedevoto/Downloads/SraRunTable-3.txt", "https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos1/sra-pub-run-1/SRR4734654/SRR4734654.1")
 
 ```
-To insert FASTQ information from a SRA number into the asv and asv_assignment tables (if not already present), run the following command. Note: This requires the user to have downloaded the [SRA toolkit](https://github.com/ncbi/sra-tools/wiki/01.-Downloading-SRA-Toolkit) provided by the NCBI. Specify the path to the toolkit as shown previously using changeConfig. The storage path specified in the config file is where the generated .fastq files will be stored.   
+######To insert FASTQ information from a SRA number into the asv and asv_assignment tables (if not already present), run the following command. 
+
+Note: This requires the user to have downloaded the [SRA toolkit](https://github.com/ncbi/sra-tools/wiki/01.-Downloading-SRA-Toolkit) provided by the NCBI. Specify the path to the toolkit as shown previously using changeConfig. The storage path specified in the config file is where the generated .fastq files will be stored.   
 
 ```bash
 julia> metPopulate.SraFASTQ_insert(sra_num, gene_region)
