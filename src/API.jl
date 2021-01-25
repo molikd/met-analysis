@@ -212,6 +212,16 @@ function delete_API_asv(asv_id)
 	end
 end
 
+function get_API_asv(sequence)
+	url = string("http://", domain, "/met/asv/asv_id?sequence=", sequence)
+	try
+		response = HTTP.get(url)
+		return String(response.body)
+	catch e
+		return "Error occured: $e"
+	end
+end
+
 
 ########### ASV_ASSIGNMENT ###########
 
