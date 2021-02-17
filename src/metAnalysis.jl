@@ -3,8 +3,12 @@ module metAnalysis
 #import PopGen
 #import GeneticVariation
 
-include("API.jl")
-include("globalDiversity.jl")
+# basic internals
+include("changeConf.jl")
+include("metAPIcalls.jl")
+include("metPopulate.jl")
 
+# analysis
+include("globalDiversity.jl")
 
 end # module

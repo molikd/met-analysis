@@ -6,9 +6,9 @@ using CSV
 using DataFrames
 using Dates
 
-include("API.jl")
+include("metAPIcalls.jl")
 include("changeConf.jl")
-using .API_calls
+using .metAPIcalls
 using .changeConf
 
 ### INSERT FASTA FILE INTO TAXA AND TAXA_SEQ_ID

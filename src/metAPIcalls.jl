@@ -1,4 +1,4 @@
-module API_calls
+module metAPIcalls
 
 include("changeConf.jl")
 using .changeConf 
