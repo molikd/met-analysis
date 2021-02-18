@@ -100,7 +100,7 @@ function SraRunInfo_insert(local_path, download_path)
 		date_new = Date(parse(Int64, year), month_num)
 	catch e
 		println("Date Format Was Incorrect")
-		date_new = date
+		date_new = data_df.Collection_date[1]
 	end
 
 	# Retrieve dataset_id from dataset table
