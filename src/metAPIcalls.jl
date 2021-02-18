@@ -182,6 +182,7 @@ end
 function update_API_projects(dataset_id, project_name)
 	url = string("http://", domain, "/met/projects/update?dataset_id=", dataset_id, "&project_name=", project_name)
 	try
+		println(domain)
 		response = HTTP.post(url)
 		return String(response.body)
 	catch e
