@@ -178,9 +178,9 @@ function SraFASTQ_insert(sra_num, gene_region)
         fastq_folder = joinpath(storagepath, ".fastq")
     end
 
-    command = joinpath(toolkitpath, "bin/fasterq-dump --concatenate-reads")
+    command = joinpath(toolkitpath, "bin/fasterq-dump")
 
-    run(`$command $sra_num -O $fastq_folder`)
+    run(`$command --concatenate-reads $sra_num -O $fastq_folder`)
     fastq_filepath = joinpath(fastq_folder, string(sra_num, ".fastq"))
 
     ## dataset id will be the same for all (same sra number)
