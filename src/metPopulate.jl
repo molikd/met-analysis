@@ -91,7 +91,7 @@ function SraRunInfo_insert(local_path, download_path)
 	# Put collection_date in correct date format
 
 	months = Dict("Jan" => 1, "Feb" => 2, "Mar" => 3, "Apr" => 4, "May" => 5, "June" => 6, "July" => 7, "Aug" => 8, "Sept" => 9, "Oct" => 10, "Nov" => 11, "Dec" => 12)
-	date = split(data_df.Collection_Date[1], "-")
+	date = split(data_df.Collection_date[1], "-")
 	month = date[1]
 	year = date[2]
 	month_num = months[month]
