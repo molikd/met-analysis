@@ -132,7 +132,7 @@ function SraRunInfo_insert(local_path, download_path)
     assay_type = "AMPLICON"
     AvgSpotLen = data_df.AvgSpotLen[1]
     publisher = "NCBI"
-    collection_date = data_df.Collection_Date[1]
+    collection_date = data_df.Collection_date[1]
     sample_depth = data_df.Depth[1]
     sample_elev = data_df.elev[1]
     sample_sal = string(data_df.Salinity[1])
