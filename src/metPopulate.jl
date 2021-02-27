@@ -121,20 +121,20 @@ function SraRunInfo_insert(local_path, download_path)
 
 	# assign vars for dataset_metadata
 	# think about what to do with variables that dont exist
-    
-	dataset_id = parse(Int64, dataset_id)
+
+    dataset_id = parse(Int64, dataset_id)
     dataset_external_identifier = data_df.Run[1]
     project_id = parse(Int64, project_id)
-    collection_identifier = "unknown"
-    experiment_identifier = "unknown"
-    sample_name = data_df."Sample Name"[1]
-    study_identifier = "unknown"
-    assay_type = data_df."Assay Type"[1]
+    collection_identifier = data_df.BioSample[1]
+    experiment_identifier = data_df.Experiment[1]
+    sample_name = data_df.Sample_Name[1]
+    study_identifier = data_df.BioProject[1]
+    assay_type = "AMPLICON"
     AvgSpotLen = data_df.AvgSpotLen[1]
-    publisher = data_df."Center Name"[1]
-    collection_date = date_new
+    publisher = "NCBI"
+    collection_date = data_df.Collection_Date[1]
     sample_depth = data_df.Depth[1]
-    sample_elev = "unknown"
+    sample_elev = data_df.elev[1]
     sample_sal = string(data_df.Salinity[1])
     env_biome = data_df.env_biome[1]
     env_feature = data_df.env_feature[1]
@@ -142,17 +142,17 @@ function SraRunInfo_insert(local_path, download_path)
     geo_loc_name_country = data_df.geo_loc_name_country[1]
     geo_loc_name_country_continent = data_df.geo_loc_name_country_continent[1]
     geo_loc_name = data_df.geo_loc_name[1]
-    loc_type = "unknown"
+    loc_type = data_df.Organism[1]
     sequencing_instrument = data_df.Instrument[1]
-    isolation_source = "unknown"
+    isolation_source = data.df.Isolation_source[1]
     lat_lon = data_df.lat_lon[1]
-    library_name = data_df."Library Name"[1]
+    library_name = data_df."unknown"
     library_layout = data_df.LibraryLayout[1]
     library_selection = data_df.LibrarySelection[1]
     library_source = data_df.LibrarySource[1]
     MBases = ceil(Int64, data_df.Bases[1]/1000000)
     MBytes = ceil(Int64, data_df.Bytes[1]/1000000)
-	sequencing_platform = data_df.Platform[1]
+    sequencing_platform = data_df.Platform[1]
     release_date = data_df.ReleaseDate[1]
 
 	metAPIcalls.insert_API_datasetmetadata(dataset_id, dataset_external_identifier, project_id, collection_identifier, experiment_identifier, sample_name, study_identifier, assay_type, AvgSpotLen, publisher, collection_date, sample_depth, sample_elev, sample_sal, env_biome, env_feature, env_material, geo_loc_name_country, geo_loc_name_country_continent, geo_loc_name, loc_type, sequencing_instrument, isolation_source, lat_lon, library_name, library_layout, library_selection, library_source[1], MBases, MBytes, sequencing_platform, release_date)
