@@ -76,16 +76,6 @@ function get_API_datasets_alpha()
 	end
 end
 
-function insert_API_asvAssignment(asv_id, dataset_id, amount_found)
-	url = string("http://", domain, "/met/dataset/dataset_taxa_table?asv_id=", asv_id, "&dataset_id=", dataset_id, "&amount_found=", amount_found)
-	try
-		response = HTTP.post(url)
-		return String(response.body)
-	catch e
-		return "Error occured: $e"
-	end
-end
-
 function insert_API_dataset(external_identifier, external_name, external_url)
 	url = string("http://", domain, "/met/dataset/add?external_identifier=", external_identifier, "&external_name=", external_name, "&external_url=", external_url)
 	try
