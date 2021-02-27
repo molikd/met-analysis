@@ -144,9 +144,9 @@ function SraRunInfo_insert(local_path, download_path)
     geo_loc_name = data_df.geo_loc_name[1]
     loc_type = data_df.Organism[1]
     sequencing_instrument = data_df.Instrument[1]
-    isolation_source = data.df.Isolation_source[1]
+    isolation_source = data_df.Isolation_source[1]
     lat_lon = data_df.lat_lon[1]
-    library_name = data_df."unknown"
+    library_name = "unknown"
     library_layout = data_df.LibraryLayout[1]
     library_selection = data_df.LibrarySelection[1]
     library_source = data_df.LibrarySource[1]
