@@ -90,18 +90,18 @@ function SraRunInfo_insert(local_path, download_path)
 
 	# Put collection_date in correct date format
 
-	months = Dict("Jan" => 1, "Feb" => 2, "Mar" => 3, "Apr" => 4, "May" => 5, "June" => 6, "July" => 7, "Aug" => 8, "Sept" => 9, "Oct" => 10, "Nov" => 11, "Dec" => 12)
+	#months = Dict("Jan" => 1, "Feb" => 2, "Mar" => 3, "Apr" => 4, "May" => 5, "June" => 6, "July" => 7, "Aug" => 8, "Sept" => 9, "Oct" => 10, "Nov" => 11, "Dec" => 12)
 	
-	try
-		date = split(data_df.Collection_date[1], "-")
-		month = date[1]
-		year[2]
-		month_num = months[month]
-		date_new = Date(parse(Int64, year), month_num)
-	catch e
-		println("Date Format Was Incorrect")
-		date_new = data_df.Collection_date[1]
-	end
+	#try
+	#	date = split(data_df.Collection_date[1], "-")
+	#	month = date[1]
+	#	year[2]
+	#	month_num = months[month]
+	#	date_new = Date(parse(Int64, year), month_num)
+	#catch e
+	#	println("Date Format Was Incorrect")
+	#	date_new = data_df.Collection_date[1]
+	#end
 
 	# Retrieve dataset_id from dataset table
 	
