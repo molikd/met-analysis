@@ -59,11 +59,11 @@ function SraRunInfo_insert(local_path, download_path)
 
 	# See if project identifier exists already in table, otherwise insert 
 	
-	project_id = metAPIcalls.get_API_projects(data_df.Experiment[1])
+	project_id = metAPIcalls.get_API_projects(data_df.BioProject[1])
 	
 	if project_id == "null"
 		println("inserting experiment into table projects ... ")
-		metAPIcalls.insert_API_projects(data_df.Experiment[1], data_df.Experiment[1], data_df.BioProject[1])
+		metAPIcalls.insert_API_projects(data_df.BioProject[1], data_df.i`SRA Study`[1], data_df.BioProject[1])
 	end
 
 	# Insert run into dataset table
@@ -111,7 +111,7 @@ function SraRunInfo_insert(local_path, download_path)
 
 	# Add dataset_id to project_id table
 
-	metAPIcalls.update_API_projects(parse(Int64, dataset_id), data_df.Experiment[1])	
+	metAPIcalls.update_API_projects(parse(Int64, dataset_id), data_df.BioProject[1])
 
 	# Retrieve project_id from project table	
 
