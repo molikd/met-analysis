@@ -111,11 +111,11 @@ function SraRunInfo_insert(local_path, download_path)
 
 	# Add dataset_id to project_id table
 
-	metAPIcalls.update_API_projects(parse(Int64, dataset_id), data_df.BioProject[1])
+	metAPIcalls.update_API_projects(parse(Int64, dataset_id), data_df.`SRA Study`[1])
 
 	# Retrieve project_id from project table	
 
-	project_id = metAPIcalls.get_API_projects(data_df.Experiment[1])
+	project_id = metAPIcalls.get_API_projects(data_df.`SRA Study`[1])
 	project_id = replace(project_id, "[" => "")
     project_id = replace(project_id, "]" => "")
 
